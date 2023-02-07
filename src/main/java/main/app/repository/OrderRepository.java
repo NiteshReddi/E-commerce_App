@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Orders, Long> {
-    @Query(value = "select order_id,customer_id from orders where customer_id=:customerId",nativeQuery = true)
-    public List<Object> findByCustomerId(Long customerId);
+    @Query(value = "select * from orders where customer_id=:customerId",nativeQuery = true)
+    public List<Orders> findByCustomerId(Long customerId);
 
 }

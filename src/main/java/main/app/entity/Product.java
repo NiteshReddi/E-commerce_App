@@ -1,6 +1,7 @@
 package main.app.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "product")
@@ -22,6 +23,9 @@ public class Product {
 
     @Column(name = "is_active_product")
     private boolean isActiveProduct;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+    private List<Orders> orders;
 
 
     public Long getProductId() {
