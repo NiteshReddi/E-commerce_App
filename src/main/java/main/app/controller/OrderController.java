@@ -18,16 +18,16 @@ public class OrderController {
     private OrderRepository orderRepository;
 
     @GetMapping("/getOrderDetailsByCustomerId/{id}")
-    private List<Orders> getOrderDetailsByCustomerId(@PathVariable("id") Long id){
-        List<Orders> order = orderRepository.findByCustomerId(1L);
+    public List<Object> getOrderDetailsByCustomerId(@PathVariable("id") Long id){
+        List<Object> obj = orderRepository.findByCustomerId(id);
         // List<Order> order = orderRepository.getById(customerID);
-        return order;
+        return obj;
     }
 
-//    @GetMapping("/getOrderByID/{id}")
-//    public Order getOrderByID(@PathVariable("id") Long id) {
-//        Order order = orderRepository.findById(id).get();
-//        return order;
-//    }
+  /*  @GetMapping("/getOrderByID/{id}")
+    public Order getOrderByID(@PathVariable("id") Long id) {
+        Order order = orderRepository.findById(id).get();
+        return order;
+    }*/
 
 }
