@@ -3,10 +3,13 @@ package main.app.controller;
 import main.app.entity.Customer;
 import main.app.model.CustomerInformation;
 import main.app.repository.CustomerRepository;
+import main.app.response.RestServiceResponse;
+import main.app.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -15,6 +18,9 @@ public class CustomerController {
 
     @Autowired
     CustomerRepository customerRepository;
+
+    @Autowired
+    EmailService emailService;
 
     @GetMapping("/getAllCustomers")
     public List<CustomerInformation> getAllCustomers(){
@@ -77,6 +83,24 @@ public class CustomerController {
         }catch(Exception ex){
             return "Customer with ID:"+customerId+" already Deleted.";
         }
+    }
+
+    @PostMapping("/signUpEmail")
+    public RestServiceResponse signUpEmail(@RequestBody CustomerInformation customerInformation){
+    Customer newCustomer = new Customer();
+    newCustomer.setCustomerName(customerInformation.getCustomerName());
+    newCustomer.setCustomerEmail(customerInformation.getCustomerEmail());
+    Date dateTime = new Date();
+    newCustomer.setCreatedDate(dateTime);
+    newCustomer.setUpdateDate(dateTime);
+    newCustomer.setPrimeUser(false);
+    customerRepository.save(newCustomer);
+
+    emailService.sendEmail(customerInformation);
+    RestServiceResponse restServiceResponse = new RestServiceResponse();
+        restServiceResponse.setStatusCode(200);
+        restServiceResponse.setStatusMessage("Customer "+customerInformation.getCustomerName()+" created successfully.");
+    return restServiceResponse;
     }
 
 }
